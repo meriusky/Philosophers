@@ -6,11 +6,13 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/05/28 19:17:44 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:03:33 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <unistd.h> //substituir per el meu printf
+#include <stdio.h> //substituir per el meu printf
+#include "printf.h"
 #include <pthread.h>
+#include "philo.h"
 
 /*size_t	ft_strlen(const char *s)
 {
@@ -49,7 +51,8 @@ int	ft_atoi(const char *str)
 	}
 	return (num * sign);
 }
-void	check_num(char *str)
+
+int	check_num(char *str, int *num)
 {
 	int i;
 
@@ -62,37 +65,41 @@ void	check_num(char *str)
 		{
 			printf("Just numbers accepted\n");
 			return (1); //quizas hay que poner error especifico
-		}
-		
+		}	
 	}
 //	if (i == ft_strlen(str))
+	if (num != NULL)
+		*num = ft_atoi(str); // tener cuantos hay en lista🦉i, no = fork, fork puede cambiar
+//da sef fault y me temo que el ERROR esta aqui, con el num, si es NULL da problemas
 	return (ft_atoi(str));
 }
+
 int main(int argc, char *argv[])
 {
 	int fork;
 	int i;
-	int	time_to_die;
-	int	time_to_sleep;   //mucha variable entiendo que esto no sera asi
-	int	time_to_eat;
+	t_philo philo;
 
 	i = 0;
-	if (argc == 4)
+	if (argc == 5)
 	{
 	//	while (argv[i])
 	//	{
-			fork = check_num(argv[1]);
+			fork = check_num(argv[1], &philo.number_of_philosophers);
+			philo.time_to_die = check_num(argv[2], NULL);
+			philo.time_to_sleep = check_num(argv[3], NULL);
+			philo.time_to_eat = check_num(argv[4], NULL);
 			if(fork < 2)
 			{
-				printf("there is not enought philosophers🦉\n")
+				printf("there is not enought philosophers🦉\n");
 				return (1); //quizas hay que poner error especifico
 			}
-			time_to_die = check_num(argv[2]);
-			time_to_sleep = check_num(argv[3]);
-			time_to_eat = check_num(argv[4]);
 			
 	//	}
 	}
+	else
+		printf("Just 4 arguments permited🦉\n");
+	return(0);
 }
 
 /*🎀BENVINGUDA AL MAIN🎀
@@ -104,5 +111,6 @@ int main(int argc, char *argv[])
  * 		1.5number_of_times_each_philosopher_must_eat
  * 2. Funcio per pasar de caracter a int, molt important ppel temps
  * 3.Potser no cal diferenciar entre els arguments amb el opcional o sense, pero dmeoment els separo
+ *
  * */
 
