@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/05/29 17:03:33 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:51:00 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h> //substituir per el meu printf
@@ -94,6 +94,7 @@ int main(int argc, char *argv[])
 				printf("there is not enought philosophers🦉\n");
 				return (1); //quizas hay que poner error especifico
 			}
+			creatig_threads(&philo);
 			
 	//	}
 	}
