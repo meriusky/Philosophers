@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/05/30 17:51:00 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/01 19:32:20 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h> //substituir per el meu printf
@@ -79,22 +79,23 @@ int main(int argc, char *argv[])
 	int fork;
 	int i;
 	t_philo philo;
+	t_table	table;
 
 	i = 0;
 	if (argc == 5)
 	{
 	//	while (argv[i])
 	//	{
-			fork = check_num(argv[1], &philo.number_of_philosophers);
+			table.fork = check_num(argv[1], &table.number_of_philosophers);
 			philo.time_to_die = check_num(argv[2], NULL);
 			philo.time_to_sleep = check_num(argv[3], NULL);
 			philo.time_to_eat = check_num(argv[4], NULL);
-			if(fork < 2)
+			if(table.fork < 2)
 			{
 				printf("there is not enought philosophers🦉\n");
 				return (1); //quizas hay que poner error especifico
 			}
-			creatig_threads(&philo);
+			creatig_threads(&philo, &table);
 			
 	//	}
 	}

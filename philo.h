@@ -5,9 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   C:wq
- *   reated: 2024/05/29 11:27:15 by mehernan          #+#    #+#             */
-/*   Updated: 2024/05/30 14:15:09 by mehernan         ###   ########.fr       */
+/*   reated: 2024/05/29 11:27:15 by mehernan          #+#    #+#             */
+/*   Updated: 2024/06/01 19:32:20 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +15,25 @@
 
 # include "philo.h"
 //falta una estructura de
-typedef struct s_philo
+typedef struct	s_philo
 {
-	int		time_to_die;
-	int		time_to_sleep;
-	int		time_to_eat;
-	int		number_of_philosophers;
-} t_philo;
+	int				time_to_die;
+	int				time_to_sleep;
+	int				time_to_eat;
+	int				ID;
+	int				last_eaten;
+	struct s_table	*table;
+}	t_philo;
+
+typedef struct	s_table
+{
+	int				number_of_philosophers;
+	t_philo			*philos;
+	t_philo			*god;//hilo supremo que controlara a los otros en un futuro
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	print;
+	pthread_mutex_t	data;// se usa despues, cuando varios hilos hagan cosas a la vez y sea todo un caos
+}	t_table;
 
 
 #endif

@@ -6,26 +6,36 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:52:35 by mehernan          #+#    #+#             */
-/*   Updated: 2024/05/30 17:51:00 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/01 19:32:20 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include "philo.h"
 #include "printf.h"
-void	philosophers_needs(philo_t phillo)//100% mal pero sirve para ubicarme
+void	philosophers_needs(philo_t philo, table_t tavle)//100% mal pero sirve para ubicarme
 {
-
+	if(table.number_of_philosphers % 2 != 0)
+		start(philo.time_to_eat) // funcioncilla para empezar y hacer cunta atras
+//	creat
+//	philo.number_of_philosophers
 }
-void	creating_threads(t_philo *num)
+void	creating_threads(t_philo *num, t_table)
 {
-	pthread_t ID;
+//	philo_t num;
+	table_t forks;
+	int i;
 
-	ID = ft_calloc(sizeof * pthread_t);
-	while(num >= 0)
+//	num = ft_calloc(sizeof * pthread_t);// no se si el necesarias
+	forks = ft_calloc(sizeof * pthread_mutex_t);
+	i = table.number_of_philosophers
+//	while(num >= 0) creo que este while no es necesario ya
+//	{
+		pthread_mutex_init(forks.table, NULL); //con NULL se pone por defecto
+	while(i !< 0)
 	{
-		pthread_create(&num.number_of_philosophers, NULL, philosophers_needs, philo); // los args pueden ser incorrectos
-		num--;
+		pthread_create(&num.ID, NULL, philosophers_needs, philo); // los args pueden ser incorrectos
+		i--;
 	}
 	
 }
