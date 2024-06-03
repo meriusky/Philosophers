@@ -13,30 +13,37 @@
 #include <pthread.h>
 #include "philo.h"
 #include "printf.h"
-void	philosophers_needs(philo_t philo, table_t tavle)//100% mal pero sirve para ubicarme
+void	philosophers_needs(t_philo *philo)//100% mal pero sirve para ubicarme
 {
-	if(table.number_of_philosphers % 2 != 0)
-		start(philo.time_to_eat) // funcioncilla para empezar y hacer cunta atras
-//	creat
-//	philo.number_of_philosophers
+//	if(table.number_of_philosphers % 2 != 0)
+//		start(philo.time_to_eat) // funcioncilla para empezar y hacer cunta atras
+	if(philo.ID % 2 == 0)
+		usleep(50000);
+	while()
+	{
+		if(
+		pthread_mutes_lock(
+	}
 }
-void	creating_threads(t_philo *num, t_table)
+void	creating_threads( t_table table)
 {
-//	philo_t num;
-	table_t forks;
 	int i;
 
-//	num = ft_calloc(sizeof * pthread_t);// no se si el necesarias
-	forks = ft_calloc(sizeof * pthread_mutex_t);
+	table.forks = ft_calloc(table.number_of_philosophers, sizeof(pthread_mutex_t));
 	i = table.number_of_philosophers
-//	while(num >= 0) creo que este while no es necesario ya
-//	{
-		pthread_mutex_init(forks.table, NULL); //con NULL se pone por defecto
-	while(i !< 0)
+	while(i >= 0)
 	{
-		pthread_create(&num.ID, NULL, philosophers_needs, philo); // los args pueden ser incorrectos
+		pthread_mutex_init(forks, NULL); //con NULL se pone por defecto
 		i--;
 	}
+	i++;
+	phtread_mutex_init(print, NULL);
+	while(i < table.number_of_philosophers)
+	{
+		pthread_create(&table.id, NULL, &philosophers_needs, &table.philos[i]); // los args pueden ser incorrectos
+		i++;
+	}
+	pthread_join(table.id, NULL);
 	
 }
 /*🦉BENVINGUDA ALS FILS🦉

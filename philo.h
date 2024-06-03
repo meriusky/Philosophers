@@ -17,21 +17,22 @@
 //falta una estructura de
 typedef struct	s_philo
 {
-	int				time_to_die;
-	int				time_to_sleep;
-	int				time_to_eat;
-	int				ID;
-	int				last_eaten;
+	int		time_to_die;
+	int		time_to_sleep;
+	int		time_to_eat;
+	int		ID;
+	int		last_eaten;
 	struct s_table	*table;
 }	t_philo;
 
 typedef struct	s_table
 {
-	int				number_of_philosophers;
-	t_philo			*philos;
-	t_philo			*god;//hilo supremo que controlara a los otros en un futuro
+	int		number_of_philosophers;
+	t_philo		*philos;
+	t_philo		*god;//hilo supremo que controlara a los otros en un futuro
+	pthread_t	id;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	print;
+	pthread_mutex_t	print;// Hay que bloquear las cosas porque sino todos iran al printf a la vez y sera un caos tremendo
 	pthread_mutex_t	data;// se usa despues, cuando varios hilos hagan cosas a la vez y sea todo un caos
 }	t_table;
 
