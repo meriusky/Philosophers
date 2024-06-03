@@ -15,14 +15,17 @@
 #include "printf.h"
 void	philosophers_needs(t_philo *philo)//100% mal pero sirve para ubicarme
 {
-//	if(table.number_of_philosphers % 2 != 0)
-//		start(philo.time_to_eat) // funcioncilla para empezar y hacer cunta atras
 	if(philo.ID % 2 == 0)
 		usleep(50000);
 	while()
 	{
-		if(
-		pthread_mutes_lock(
+		pthread_mutex_lock(philo->table->forks[philo->ID])//el primero
+		if(philo->ID == 0)
+			pthread_mutex_lock(philo->table->forks[table->number_of_philosophers - 1])
+			//la cosa es que si es el primero hay que bloquear la 🍴 ultima
+		else
+			pthread_mutex_lock(philo->table->forks[philo->ID - 1])
+				//coje el suyo y el anterios
 	}
 }
 void	creating_threads( t_table table)
