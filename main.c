@@ -6,13 +6,36 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/01 19:32:20 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:45:42 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h> //substituir per el meu printf
-#include "printf.h"
-#include <pthread.h>
+
 #include "philo.h"
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	count;
+	char	*dst;
+
+	dst = (char *)s;
+	count = 0;
+	while (count < n)
+	{
+		dst[count] = 0;
+		count++;
+	}
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*ptr;
+
+	ptr = malloc(size * count);
+	if (!ptr)
+		return (NULL);
+	ft_bzero(ptr, (size * count));
+	return (ptr);
+}
 
 int	ft_atoi(const char *str)
 {
@@ -60,33 +83,34 @@ int	check_num(char *str)
 
 int main(int argc, char *argv[])
 {
-	int i;
+	int	i;
 	t_table	table;
-	t_philo *arr;
+	t_philo	*arr;
 
 	i = 0;
 	if (argc == 5)
 	{
 		if (check_num(argv[1]) == -1 || check_num(argv[2]) == -1
-			|| check_num(argv[3]) == -1 || check_num(argv[4] == -1))
+			|| check_num(argv[3]) == -1 || check_num(argv[4]) == -1)
 			return (0);
-		arr = ft_calloc(i + 1, sizeof(t_philo));
-		if(table.fork < 2)
+		arr = (t_philo *)ft_calloc(ft_atoi(argv[1]), sizeof(t_philo));
+		if(ft_atoi(argv[1]) < 2)
 		{
 			printf("there is not enought philosophers🦉\n");
 			return (1); //quizas hay que poner error especifico
 		}
-		while(i != ft_atoi(argv[1]))
+		while(i < ft_atoi(argv[1]))
 		{
 			arr[i].ID = i;
 			arr[i].time_to_die = ft_atoi(argv[2]);
 			arr[i].time_to_sleep = ft_atoi(argv[3]);
 			arr[i].time_to_eat = ft_atoi(argv[4]);
 			arr[i].last_eaten = 0;
+			arr[i].number_of_philosophers = ft_atoi(argv[1]);
 			arr[i].table = &table;
 			i++;
 		}
-		arr[i] = NULL;
+		table.number_of_philosophers = ft_atoi(argv[1]);
 		table.philos = arr;
 		creating_threads(&table);
 	}
