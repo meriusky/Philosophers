@@ -1,8 +1,12 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
+/*   By: mehernan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/29 16:52:35 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/05 12:42:18 by mehernan         ###   ########.fr       */
+/*   Created: 2024/06/06 17:02:53 by mehernan          #+#    #+#             */
+/*   Updated: 2024/06/06 19:51:40 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +21,15 @@ void	god_decision(t_table *table)
 	{
 		i = 0;
 		gettimeofday(&table->tv, NULL);
-		now = table->tv.tv_usec;
+		now = (table->tv.tv_sec * 1000000) + table->tv.tv_usec;
 		while (i < table->number_of_philosophers)
 		{
+//			printf("Now: %llu\tPhilo: %llu\n", now, table->philos[i].eat_clock_in);
 			if((now - table->philos[i].eat_clock_in) >= table->philos[i].time_to_die * 1000)
 			{
+			//	printf("Dead: %llu\n",now - table->philos[i].eat_clock_in);
 				table->death = 1;
-				break ;
+				return ;
 			}
 			i++;
 		}
@@ -43,28 +49,31 @@ void	philosophers_needs(t_philo *philo)
 		else
 			left = &philo->table->forks[philo->ID - 1];
 		pthread_mutex_lock(&philo->table->forks[philo->ID]);//el primero
-		printf("%d: Primer tenedor cogido\n", philo->ID + 1);
+//		print_philos("Primer tenedor cogido", philo->ID + 1);
 		pthread_mutex_lock(left);
-		printf("%d: segundo tenedor cogido(el del philo)\n", philo->ID + 1);
-		printf("%d: comer: %d\n", philo->ID + 1 ,philo->time_to_eat);
-		usleep(philo->time_to_eat * 1000);
-		printf("%d: comer FIN\n", philo->ID + 1);
+//		print_philos("segundo tenedor cogido(el del philo)", philo->ID + 1);
+		print_philos(philo->table,"comer", philo->ID + 1);// cmo print tiempo
 /*coge tiempo*/	gettimeofday(&tv, NULL);
-		philo->eat_clock_in = tv.tv_usec;
+		philo->eat_clock_in = (tv.tv_sec * 1000000) + tv.tv_usec;
+		usleep(philo->time_to_eat * 1000);
+		print_philos(philo->table, "FIN de comer", philo->ID + 1);
 		pthread_mutex_unlock(&philo->table->forks[philo->ID]);
-		printf("%d: Primer tenedor libre\n", philo->ID + 1);
+//		print_philos("Primer tenedor libre", philo->ID + 1);
 		pthread_mutex_unlock(left);
-		printf("%d: Segundo tenedor libre\n", philo->ID + 1);
-		printf("%d: A mimir\n", philo->ID + 1);
+//		print_philos("Segundo tenedor libren", philo->ID + 1);
+		print_philos(philo->table, "A mimir", philo->ID + 1);
 		usleep(philo->time_to_sleep * 1000);
-		printf("%d: Acaba de mimir, ahora a pensar\n", philo->ID + 1);
+		print_philos(philo->table, "Acaba de mimir, ahora a pensar", philo->ID + 1);
 	}
-	printf("%d: philosopher died\n", philo->ID + 1);
+	print_philos(philo->table, "philosopher died", philo->ID + 1);
 }
+
 void	creating_threads(t_table *table)
 {
-	int	i;
+	int		i;
+	struct timeval	now;
 
+	table->death = 0;
 	table->data = malloc(sizeof(pthread_mutex_t));
 	table->print = malloc(sizeof(pthread_mutex_t));
 	table->id = malloc(table->number_of_philosophers * sizeof(pthread_t));
@@ -85,6 +94,8 @@ void	creating_threads(t_table *table)
 	i = 0;
 	while(i < table->number_of_philosophers)
 	{
+		gettimeofday(&now, NULL);
+		table->philos[i].eat_clock_in = (now.tv_sec * 1000000) + now.tv_usec;
 		pthread_create(&table->id[i], NULL, (void *)&philosophers_needs, (void *)&table->philos[i]); // los args pueden ser incorrectos
 		i++;
 	}

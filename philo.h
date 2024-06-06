@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   reated: 2024/05/29 11:27:15 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/06 14:11:47 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/06 19:51:44 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ typedef struct	s_table
 
 void	creating_threads(t_table *table);
 void	*ft_calloc(size_t count, size_t size);
+void	print_philos(t_table *table, char *str, int p);
 
 #endif
