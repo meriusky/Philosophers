@@ -20,7 +20,7 @@ void	god_decision(t_table *table)
 		now = table->tv.tv_usec;
 		while (i < table->number_of_philosophers)
 		{
-			if((now - table->philo[i].eat_clock_in) >= table->philo[i].time_to_die)
+			if((now - table->philos[i].eat_clock_in) >= table->philos[i].time_to_die * 1000)
 			{
 				table->death = 1;
 				break ;
@@ -32,10 +32,11 @@ void	god_decision(t_table *table)
 
 void	philosophers_needs(t_philo *philo)
 {
+	struct timeval tv;
 	pthread_mutex_t	*left;
 	if(philo->ID % 2 != 0)
 		usleep(50000);
-	while(42)
+	while(philo->table->death != 1)
 	{
 		if (philo->ID == 0)
 			left = &philo->table->forks[philo->number_of_philosophers - 1];
@@ -48,7 +49,8 @@ void	philosophers_needs(t_philo *philo)
 		printf("%d: comer: %d\n", philo->ID + 1 ,philo->time_to_eat);
 		usleep(philo->time_to_eat * 1000);
 		printf("%d: comer FIN\n", philo->ID + 1);
-/*coge tiempo*/	god->philo->eat_clock_in = gettimeofday(&tv, NULL);
+/*coge tiempo*/	gettimeofday(&tv, NULL);
+		philo->eat_clock_in = tv.tv_usec;
 		pthread_mutex_unlock(&philo->table->forks[philo->ID]);
 		printf("%d: Primer tenedor libre\n", philo->ID + 1);
 		pthread_mutex_unlock(left);
@@ -57,6 +59,7 @@ void	philosophers_needs(t_philo *philo)
 		usleep(philo->time_to_sleep * 1000);
 		printf("%d: Acaba de mimir, ahora a pensar\n", philo->ID + 1);
 	}
+	printf("%d: philosopher died\n", philo->ID + 1);
 }
 void	creating_threads(t_table *table)
 {
@@ -85,11 +88,11 @@ void	creating_threads(t_table *table)
 		pthread_create(&table->id[i], NULL, (void *)&philosophers_needs, (void *)&table->philos[i]); // los args pueden ser incorrectos
 		i++;
 	}
-	pthread_create(table->god_id, NULL, (void *)&god_decisions, (void *)table);
+	pthread_create(table->god_id, NULL, (void *)&god_decision, (void *)table);
 	i = -1;
 	while (++i < table->number_of_philosophers)
 		pthread_join(table->id[i], NULL);
-	pthread_join(table->god_id, NULL);
+	pthread_join(*table->god_id, NULL);
 }
 /*🦉BENVINGUDA ALS FILS🦉
  * 1. Hem de crear els finls

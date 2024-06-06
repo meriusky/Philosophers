@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/05 14:45:42 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:26:50 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 			arr[i].time_to_die = ft_atoi(argv[2]);
 			arr[i].time_to_sleep = ft_atoi(argv[3]);
 			arr[i].time_to_eat = ft_atoi(argv[4]);
-			arr[i].last_eaten = 0;
+			arr[i].eat_clock_in = 0;
 			arr[i].number_of_philosophers = ft_atoi(argv[1]);
 			arr[i].table = &table;
 			i++;
