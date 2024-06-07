@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   reated: 2024/05/29 11:27:15 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/06 19:51:44 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:38:52 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ typedef struct	s_philo
 	int		time_to_die;
 	int		time_to_sleep;
 	int		time_to_eat;
+	int		must_eat;
+	int		eat_times;
 	long long	eat_clock_in;
 	int		number_of_philosophers;
 	struct s_table	*table;
@@ -42,10 +44,14 @@ typedef struct	s_table
 	pthread_mutex_t	*data;// se usa despues, cuando varios hilos hagan cosas a la vez y sea todo un caos
 	int		death;
 	struct timeval	tv;
+	long long	start;
 }	t_table;
 
-void	creating_threads(t_table *table);
-void	*ft_calloc(size_t count, size_t size);
-void	print_philos(t_table *table, char *str, int p);
+void		creating_threads(t_table *table);
+void		*ft_calloc(size_t count, size_t size);
+void		lets_print(t_table *table, char *str, int p);
+
+void		my_sleep(long long wait);
+long long	get_time();
 
 #endif

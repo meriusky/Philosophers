@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehernan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mehernan <meherna@student.42barcelna>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:02:53 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/06 19:51:40 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:38:49 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,18 @@ void	god_decision(t_table *table)
 	while(42)
 	{
 		i = 0;
-		gettimeofday(&table->tv, NULL);
-		now = (table->tv.tv_sec * 1000000) + table->tv.tv_usec;
+		now = get_time();
 		while (i < table->number_of_philosophers)
 		{
-//			printf("Now: %llu\tPhilo: %llu\n", now, table->philos[i].eat_clock_in);
 			if((now - table->philos[i].eat_clock_in) >= table->philos[i].time_to_die * 1000)
 			{
-			//	printf("Dead: %llu\n",now - table->philos[i].eat_clock_in);
+				lets_print(table, "philo died", table->philos->ID + 1);
 				table->death = 1;
+				return ;
+			}
+			if(table->philos[i].eat_times == table->philos[i].must_eat)
+			{
+				lets_print(table, "eat enought", table->philos->ID + 1);
 				return ;
 			}
 			i++;
@@ -40,32 +43,29 @@ void	philosophers_needs(t_philo *philo)
 {
 	struct timeval tv;
 	pthread_mutex_t	*left;
-	if(philo->ID % 2 != 0)
-		usleep(50000);
-	while(philo->table->death != 1)
+	if (philo->ID % 2 != 0)
+		my_sleep(philo->time_to_eat - 1);
+	while (philo->table->death != 1 && philo->eat_times != philo->must_eat)
 	{
 		if (philo->ID == 0)
 			left = &philo->table->forks[philo->number_of_philosophers - 1];
 		else
 			left = &philo->table->forks[philo->ID - 1];
 		pthread_mutex_lock(&philo->table->forks[philo->ID]);//el primero
-//		print_philos("Primer tenedor cogido", philo->ID + 1);
+		lets_print(philo->table, "has take the right fork", philo->ID + 1);
 		pthread_mutex_lock(left);
-//		print_philos("segundo tenedor cogido(el del philo)", philo->ID + 1);
-		print_philos(philo->table,"comer", philo->ID + 1);// cmo print tiempo
-/*coge tiempo*/	gettimeofday(&tv, NULL);
-		philo->eat_clock_in = (tv.tv_sec * 1000000) + tv.tv_usec;
-		usleep(philo->time_to_eat * 1000);
-		print_philos(philo->table, "FIN de comer", philo->ID + 1);
+		lets_print(philo->table, "has taken the left fork", philo->ID + 1);
+		lets_print(philo->table, "is eating", philo->ID + 1);// cmo print tiempo
+		philo->eat_times++;
+		philo->eat_clock_in = get_time();
+		my_sleep(philo->time_to_eat);
+		lets_print(philo->table, "has finished eating", philo->ID + 1);
 		pthread_mutex_unlock(&philo->table->forks[philo->ID]);
-//		print_philos("Primer tenedor libre", philo->ID + 1);
 		pthread_mutex_unlock(left);
-//		print_philos("Segundo tenedor libren", philo->ID + 1);
-		print_philos(philo->table, "A mimir", philo->ID + 1);
-		usleep(philo->time_to_sleep * 1000);
-		print_philos(philo->table, "Acaba de mimir, ahora a pensar", philo->ID + 1);
+		lets_print(philo->table, "is sleeping", philo->ID + 1);
+		my_sleep(philo->time_to_sleep);
+		lets_print(philo->table, "has finished sleeping, now is thinking", philo->ID + 1);
 	}
-	print_philos(philo->table, "philosopher died", philo->ID + 1);
 }
 
 void	creating_threads(t_table *table)
@@ -92,10 +92,10 @@ void	creating_threads(t_table *table)
 		i++;
 	}
 	i = 0;
+	table->start = get_time();
 	while(i < table->number_of_philosophers)
 	{
-		gettimeofday(&now, NULL);
-		table->philos[i].eat_clock_in = (now.tv_sec * 1000000) + now.tv_usec;
+		table->philos[i].eat_clock_in = get_time();
 		pthread_create(&table->id[i], NULL, (void *)&philosophers_needs, (void *)&table->philos[i]); // los args pueden ser incorrectos
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/06 17:59:56 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:15:06 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	t_philo	*arr;
 
 	i = 0;
-	if (argc == 5)
+	if (argc == 5 || argc == 6)
 	{
 		if (check_num(argv[1]) == -1 || check_num(argv[2]) == -1
 			|| check_num(argv[3]) == -1 || check_num(argv[4]) == -1)
@@ -108,6 +108,11 @@ int main(int argc, char *argv[])
 			arr[i].eat_clock_in = 0;
 			arr[i].number_of_philosophers = ft_atoi(argv[1]);
 			arr[i].table = &table;
+			arr[i].eat_times = 0;
+			if(argv[5] != NULL && check_num(argv[5]) == 0)
+				arr[i].must_eat = ft_atoi(argv[5]);
+			else
+				arr[i].must_eat = -1;
 			i++;
 		}
 		table.number_of_philosophers = ft_atoi(argv[1]);

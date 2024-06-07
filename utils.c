@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_time.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mehernan <mehernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 16:46:26 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/07 17:38:54 by mehernan         ###   ########.fr       */
+/*   Created: 2024/06/07 17:13:21 by mehernan          #+#    #+#             */
+/*   Updated: 2024/06/07 17:33:11 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	lets_print(t_table *table, char *str, int p)
+long long	get_time()
 {
-	long long	now;
+	struct timeval	tv;
 
-	now = get_time();
-	pthread_mutex_lock(table->print);
-	printf("%.4lld : %d  %s\n", now - table->start, p, str);
-	pthread_mutex_unlock(table->print);
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	my_sleep(long long wait)
+{
+	wait += get_time();
+	while (wait >= get_time())
+		usleep (100);
 }
