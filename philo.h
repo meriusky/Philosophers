@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   reated: 2024/05/29 11:27:15 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/07 17:38:52 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:05:33 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ typedef struct	s_table
 void		creating_threads(t_table *table);
 void		*ft_calloc(size_t count, size_t size);
 void		lets_print(t_table *table, char *str, int p);
-
 void		my_sleep(long long wait);
 long long	get_time();
+void		ft_bzero(void	*s, size_t size);
+void		*ft_calloc(size_t count, size_t size);
+int		ft_atoi(const char *str);
 
 #endif

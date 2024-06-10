@@ -6,7 +6,7 @@
 /*   By: mehernan <meherna@student.42barcelna>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:02:53 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/07 17:38:49 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/10 20:07:07 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,20 @@ void	god_decision(t_table *table)
 	int		i;
 	long long	now;
 	
-	while(42)
+	while (42)
 	{
 		i = 0;
 		now = get_time();
 		while (i < table->number_of_philosophers)
 		{
-			if((now - table->philos[i].eat_clock_in) >= table->philos[i].time_to_die * 1000)
+			if ((now - table->philos[i].eat_clock_in) >= 
+					table->philos[i].time_to_die * 1000)
 			{
 				lets_print(table, "philo died", table->philos->ID + 1);
 				table->death = 1;
 				return ;
 			}
-			if(table->philos[i].eat_times == table->philos[i].must_eat)
+			if (table->philos[i].eat_times == table->philos[i].must_eat)
 			{
 				lets_print(table, "eat enought", table->philos->ID + 1);
 				return ;
