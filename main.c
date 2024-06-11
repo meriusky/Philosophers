@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/10 19:52:33 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:28:56 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_num(char *str)
 	return (0);
 }
 
-void	get_array(t_philo *arr, t_table *table, char argv[], int i)
+void	get_array(t_philo *arr, t_table *table, char **argv, int i)
 {
 	if (check_num(argv[1]) == -1 || check_num(argv[2]) == -1
 		|| check_num(argv[3]) == -1 || check_num(argv[4]) == -1)
@@ -43,14 +43,14 @@ void	get_array(t_philo *arr, t_table *table, char argv[], int i)
 	}
 	while (i < ft_atoi(argv[1]))
 	{
-		arr->ID = i;
-		arr->time_to_die = ft_atoi(argv[2]);
-		arr->time_to_sleep = ft_atoi(argv[3]);
-		arr->time_to_eat = ft_atoi(argv[4]);
-		arr->eat_clock_in = 0;
-		arr->number_of_philosophers = ft_atoi(argv[1]);
-		arr->table = &table;
-		arr->eat_times = 0;
+		arr[i].ID = i;
+		arr[i].time_to_die = ft_atoi(argv[2]);
+		arr[i].time_to_sleep = ft_atoi(argv[3]);
+		arr[i].time_to_eat = ft_atoi(argv[4]);
+		arr[i].eat_clock_in = 0;
+		arr[i].number_of_philosophers = ft_atoi(argv[1]);
+		arr[i].table = table;
+		arr[i].eat_times = 0;
 		if (argv[5] != NULL && check_num(argv[5]) == 0)
 			arr->must_eat = ft_atoi(argv[5]);
 		else
@@ -68,7 +68,7 @@ int	main(int argc, char *argv[])
 	i = 0;
 	if (argc == 5 || argc == 6)
 	{
-		get_array(&arr[i], &table, argv[], i);
+		get_array(arr, &table, argv, i);
 		table.number_of_philosophers = ft_atoi(argv[1]);
 		table.philos = arr;
 		creating_threads(&table);

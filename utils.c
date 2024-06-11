@@ -6,13 +6,13 @@
 /*   By: mehernan <mehernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:13:21 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/10 16:26:27 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:53:43 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_time()
+long long	get_time(void)
 {
 	struct timeval	tv;
 
@@ -26,6 +26,7 @@ void	my_sleep(long long wait)
 	while (wait >= get_time())
 		usleep (100);
 }
+
 void	ft_bzero(void *s, size_t n)
 {
 	size_t	count;
@@ -76,4 +77,3 @@ int	ft_atoi(const char *str)
 	}
 	return (num * sign);
 }
-

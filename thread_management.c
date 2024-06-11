@@ -6,7 +6,7 @@
 /*   By: mehernan <meherna@student.42barcelna>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:02:53 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/10 20:07:07 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/11 13:14:46 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,40 +40,44 @@ void	god_decision(t_table *table)
 	}
 }
 
+void	threads_working(t_philo *philo)
+{
+	struct timeval	tv;
+	pthread_mutex_t	*left;
+
+	if (philo->ID == 0)
+		left = &philo->table->forks[philo->number_of_philosophers - 1];
+	else
+		left = &philo->table->forks[philo->ID - 1];
+	pthread_mutex_lock(&philo->table->forks[philo->ID]);
+	lets_print(philo->table, "has take the right fork", philo->ID + 1);
+	pthread_mutex_lock(left);
+	lets_print(philo->table, "has taken the left fork", philo->ID + 1);
+	lets_print(philo->table, "is eating", philo->ID + 1);
+	philo->eat_times++;
+	philo->eat_clock_in = get_time();
+	my_sleep(philo->time_to_eat);
+	lets_print(philo->table, "has finished eating", philo->ID + 1);
+	pthread_mutex_unlock(&philo->table->forks[philo->ID]);
+	pthread_mutex_unlock(left);
+	lets_print(philo->table, "is sleeping", philo->ID + 1);
+	my_sleep(philo->time_to_sleep);
+	lets_print(philo->table, "finish sleep, now thinking", philo->ID + 1);
+}
+
 void	philosophers_needs(t_philo *philo)
 {
-	struct timeval tv;
+	struct timeval	tv;
 	pthread_mutex_t	*left;
+
 	if (philo->ID % 2 != 0)
 		my_sleep(philo->time_to_eat - 1);
 	while (philo->table->death != 1 && philo->eat_times != philo->must_eat)
-	{
-		if (philo->ID == 0)
-			left = &philo->table->forks[philo->number_of_philosophers - 1];
-		else
-			left = &philo->table->forks[philo->ID - 1];
-		pthread_mutex_lock(&philo->table->forks[philo->ID]);//el primero
-		lets_print(philo->table, "has take the right fork", philo->ID + 1);
-		pthread_mutex_lock(left);
-		lets_print(philo->table, "has taken the left fork", philo->ID + 1);
-		lets_print(philo->table, "is eating", philo->ID + 1);// cmo print tiempo
-		philo->eat_times++;
-		philo->eat_clock_in = get_time();
-		my_sleep(philo->time_to_eat);
-		lets_print(philo->table, "has finished eating", philo->ID + 1);
-		pthread_mutex_unlock(&philo->table->forks[philo->ID]);
-		pthread_mutex_unlock(left);
-		lets_print(philo->table, "is sleeping", philo->ID + 1);
-		my_sleep(philo->time_to_sleep);
-		lets_print(philo->table, "has finished sleeping, now is thinking", philo->ID + 1);
-	}
+		threads_working(philo);
 }
 
-void	creating_threads(t_table *table)
+void	get_memory(t_table *table)
 {
-	int		i;
-	struct timeval	now;
-
 	table->death = 0;
 	table->data = malloc(sizeof(pthread_mutex_t));
 	table->print = malloc(sizeof(pthread_mutex_t));
@@ -82,10 +86,27 @@ void	creating_threads(t_table *table)
 	table->god_id = malloc(sizeof(pthread_t));
 	pthread_mutex_init(table->data, NULL);
 	pthread_mutex_init(table->print, NULL);
-	i = 0;
-	while(i < table->number_of_philosophers)
+	if(table->data == NULL || table->id == NULL || table->forks == NULL
+			|| table->print == NULL || table->god_id == NULL)
 	{
-		if (pthread_mutex_init(&table->forks[i], NULL) != 0) //con NULL se pone por defecto
+		free(table->data);
+		free(table->print);
+		free(table->id);
+		free(table->forks);
+		free(table->god_id);
+	}
+}
+//Funcion muy larga a la qe hay que quitar los i++
+void	creating_threads(t_table *table)
+{
+	int		i;
+	struct	timeval	now;
+
+	get_memory(table);
+	i = 0;
+	while (i < table->number_of_philosophers)
+	{
+		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
 		{
 			printf("Error\n");
 			exit(0);
@@ -94,10 +115,11 @@ void	creating_threads(t_table *table)
 	}
 	i = 0;
 	table->start = get_time();
-	while(i < table->number_of_philosophers)
+	while (i < table->number_of_philosophers)
 	{
 		table->philos[i].eat_clock_in = get_time();
-		pthread_create(&table->id[i], NULL, (void *)&philosophers_needs, (void *)&table->philos[i]); // los args pueden ser incorrectos
+		pthread_create(&table->id[i], NULL, (void *)&philosophers_needs,
+				(void *)&table->philos[i]); 
 		i++;
 	}
 	pthread_create(table->god_id, NULL, (void *)&god_decision, (void *)table);
