@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:46:26 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/12 19:03:37 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:22:05 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	lock_unlock_forks(t_philo *philo, pthread_mutex_t *right,
 	pthread_mutex_t	*tmp_left;
 	pthread_mutex_t	*tmp_right;
 
-
-	if (philo->ID % 2 == 0)
+	if (philo->id % 2 == 0)
 	{
 		tmp_left = right;
 		tmp_right = left;
@@ -32,7 +31,7 @@ void	lock_unlock_forks(t_philo *philo, pthread_mutex_t *right,
 	if (!mod)
 	{
 		pthread_mutex_lock(tmp_left);
-		lets_print(philo->table, "has take the right fork", philo->ID + 1);
+		lets_print(philo->table, "has take the right fork", philo->id + 1);
 		pthread_mutex_lock(tmp_right);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: mehernan <meherna@student.42barcelna>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:02:53 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/12 19:02:42 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:22:43 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	god_decision(t_table *table)
 				>= table->time_to_die)
 			{
 				lets_print(table, "philo died",
-					table->philos[i].ID + 1);
+					table->philos[i].id + 1);
 				table->death = 1;
 				return ;
 			}
@@ -38,7 +38,7 @@ static void	god_decision(t_table *table)
 				table->philos[i].must_eat)
 			{
 //				lets_print(table, "eat enought",
-//					table->philos[i].ID + 1);
+//					table->philos[i].id + 1);
 				return ;
 			}
 		}
@@ -48,27 +48,27 @@ static void	god_decision(t_table *table)
 static void	threads_working(t_philo *philo, pthread_mutex_t *left,
 	pthread_mutex_t *right, struct timeval tv)
 {
-	if (philo->ID == 0)
+	if (philo->id == 0)
 		left = &philo->table->forks[philo->number_of_philosophers - 1];
 	else
-		left = &philo->table->forks[philo->ID - 1];
-	right = &philo->table->forks[philo->ID];
+		left = &philo->table->forks[philo->id - 1];
+	right = &philo->table->forks[philo->id];
 	lock_unlock_forks(philo, right, left, 0);
-//	pthread_mutex_lock(&philo->table->forks[philo->ID]);
-//	lets_print(philo->table, "has take the right fork", philo->ID + 1);
+//	pthread_mutex_lock(&philo->table->forks[philo->id]);
+//	lets_print(philo->table, "has take the right fork", philo->id + 1);
 //	pthread_mutex_lock(left);
-	lets_print(philo->table, "has taken the left fork", philo->ID + 1);
-	lets_print(philo->table, "is eating", philo->ID + 1);
+	lets_print(philo->table, "has taken the left fork", philo->id + 1);
+	lets_print(philo->table, "is eating", philo->id + 1);
 	philo->eat_times++;
 	philo->eat_clock_in = get_time();
 	my_sleep(philo->time_to_eat);
-	lets_print(philo->table, "has finished eating", philo->ID + 1);
+	lets_print(philo->table, "has finished eating", philo->id + 1);
 	lock_unlock_forks(philo, right, left, 1);
-//	pthread_mutex_unlock(&philo->table->forks[philo->ID]);
+//	pthread_mutex_unlock(&philo->table->forks[philo->id]);
 //	pthread_mutex_unlock(left);
-	lets_print(philo->table, "is sleeping", philo->ID + 1);
+	lets_print(philo->table, "is sleeping", philo->id + 1);
 	my_sleep(philo->time_to_sleep);
-	lets_print(philo->table, "finish sleep, now thinking", philo->ID + 1);
+	lets_print(philo->table, "finish sleep, now thinking", philo->id + 1);
 }
 
 static void	philos_needs(t_philo *philo)
@@ -77,7 +77,7 @@ static void	philos_needs(t_philo *philo)
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
 
-	if (philo->ID % 2 != 0)
+	if (philo->id % 2 != 0)
 		my_sleep(philo->time_to_eat - 1);
 	while (get_int(philo->table->data, &philo->table->death) != 1
 		&& philo->eat_times != philo->must_eat)

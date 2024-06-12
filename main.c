@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/12 18:48:43 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/12 19:22:15 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	get_array(t_philo *arr, t_table *table, char **argv, int i)
 		return (error("There is not enough prhilosophers🦉\n", 1));
 	while (i < ft_atoi(argv[1]))
 	{
-		arr[i].ID = i;
+		arr[i].id = i;
 		arr[i].time_to_sleep = ft_atoi(argv[3]);
 		arr[i].time_to_eat = ft_atoi(argv[4]);
 		arr[i].eat_clock_in = 0;
