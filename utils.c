@@ -6,25 +6,30 @@
 /*   By: mehernan <mehernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:13:21 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/11 12:53:43 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/12 18:49:16 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_time(void)
+long long	get_long(pthread_mutex_t *mutex, long long *value)
 {
-	struct timeval	tv;
+	long long	tmp;
 
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	pthread_mutex_lock(mutex);
+	tmp = *value;
+	pthread_mutex_unlock(mutex);
+	return (tmp);
 }
 
-void	my_sleep(long long wait)
+int	get_int(pthread_mutex_t *mutex, int *value)
 {
-	wait += get_time();
-	while (wait >= get_time())
-		usleep (100);
+	int	tmp;
+
+	pthread_mutex_lock(mutex);
+	tmp = *value;
+	pthread_mutex_unlock(mutex);
+	return (tmp);
 }
 
 void	ft_bzero(void *s, size_t n)
