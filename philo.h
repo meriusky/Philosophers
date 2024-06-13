@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:27:15 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/13 14:35:47 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:33:58 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_philo
 typedef struct s_table
 {
 	int				death;
+	int				must_eat;
 	int				time_to_die;
 	int				number_of_philosophers;
 	t_philo			god;
@@ -49,6 +50,7 @@ typedef struct s_table
 	long long		start;
 }					t_table;
 
+int				check_num(char *str);
 int				ft_atoi(const char *str);
 int				error(char *str, int out);
 int				free_func(t_table *table, char *str, int out);
@@ -59,9 +61,12 @@ void			ft_bzero(void	*s, size_t size);
 void			*ft_calloc(size_t count, size_t size);
 void			*ft_calloc(size_t count, size_t size);
 void			lets_print(t_table *table, char *str, int p);
+void			set_values(t_table *table, t_philo *arr, char **argv);
 int				lock_unlock_forks(t_philo *philo, t_mutex *right, \
 					t_mutex *left, int mod);
 long long		get_time(void);
 long long		get_long(t_mutex *mutex, long long *value);
+void			set_int(t_mutex *mutex, int *value, int new);
+void			set_long(t_mutex *mutex, long long *value, long long new);
 
 #endif

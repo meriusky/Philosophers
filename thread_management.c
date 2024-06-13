@@ -6,7 +6,7 @@
 /*   By: mehernan <meherna@student.42barcelna>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:02:53 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/13 14:53:22 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:55:53 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static void	god_decision(t_table *table)
 				table->death = 1;
 				return ;
 			}
-			if (table->philos[i].eat_times == table->philos[i].must_eat)
+			if (get_int(table->data, &table->philos[i].eat_times)
+				== table->must_eat)
 				return ;
 		}
 	}
@@ -51,16 +52,16 @@ static int	threads_working(t_philo *philo, t_mutex *left, t_mutex *right)
 		return (1);
 	lets_print(philo->table, "has taken the left fork🍴", philo->id + 1);
 	lets_print(philo->table, "is eating🥘", philo->id + 1);
-	philo->eat_times++;
-	philo->eat_clock_in = get_time();
+	set_int(philo->table->data, &philo->eat_times, philo->eat_times + 1);
+	set_long(philo->table->data, &philo->eat_clock_in, get_time());
 	my_sleep(philo->time_to_eat);
 	lets_print(philo->table, "has finished eating🍽️", philo->id + 1);
 	i = lock_unlock_forks(philo, right, left, 1);
 	if (i)
 		return (1);
-	lets_print(philo->table, "is sleeping😴", philo->id + 1);
+	lets_print(philo->table, "is sleeping💤", philo->id + 1);
 	my_sleep(philo->time_to_sleep);
-	lets_print(philo->table, "finish sleep, now thinking💡", philo->id + 1);
+	lets_print(philo->table, "finish sleep, now thinking🧠", philo->id + 1);
 	return (0);
 }
 

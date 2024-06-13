@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/13 14:43:45 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:56:47 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	free_func(t_table *table, char *str, int out)
 	return (0);
 }
 
-static int	check_num(char *str)
+int	check_num(char *str)
 {
 	int	i;
 
@@ -89,14 +89,12 @@ int	main(int argc, char *argv[])
 			return (error("Malloc error\n", 1));
 		if (get_array(arr, &table, argv, i) == 1)
 			return (1);
-		table.philos = arr;
-		table.time_to_die = ft_atoi(argv[2]);
-		table.number_of_philosophers = ft_atoi(argv[1]);
+		set_values(&table, arr, argv);
 		if (creating_threads(&table) == 1)
 			return (1);
 		return (free_func(&table, "", 0));
 	}
 	else
-		printf("Just 5 and 6 arguments permited🦉\n");
+		printf("Just 5 and 6 arguments permitted🦉\n");
 	return (0);
 }
