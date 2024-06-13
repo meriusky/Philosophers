@@ -6,32 +6,38 @@
 /*   By: mehernan <mehernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:46:26 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/12 19:22:05 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:54:09 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	lock_unlock_forks(t_philo *philo, pthread_mutex_t *right,
-	pthread_mutex_t *left, int mod)
+static void	take_left_right(t_mutex **tmp_right, t_mutex **tmp_left,
+	t_mutex *right, t_mutex *left)
 {
-	pthread_mutex_t	*tmp_left;
-	pthread_mutex_t	*tmp_right;
+	*tmp_left = left;
+	*tmp_right = right;
+}
+
+int	lock_unlock_forks(t_philo *philo, t_mutex *right,
+	t_mutex *left, int mod)
+{
+	t_mutex	*tmp_left;
+	t_mutex	*tmp_right;
 
 	if (philo->id % 2 == 0)
-	{
-		tmp_left = right;
-		tmp_right = left;
-	}
+		take_left_right(&tmp_right, &tmp_left, left, right);
 	else
-	{
-		tmp_left = left;
-		tmp_right = right;
-	}
+		take_left_right(&tmp_right, &tmp_left, right, left);
 	if (!mod)
 	{
 		pthread_mutex_lock(tmp_left);
-		lets_print(philo->table, "has take the right fork", philo->id + 1);
+		lets_print(philo->table, "has take the right fork🍴", philo->id + 1);
+		if (philo->number_of_philosophers == 1)
+		{
+			pthread_mutex_unlock(tmp_left);
+			return (1);
+		}
 		pthread_mutex_lock(tmp_right);
 	}
 	else
@@ -39,6 +45,7 @@ void	lock_unlock_forks(t_philo *philo, pthread_mutex_t *right,
 		pthread_mutex_unlock(tmp_left);
 		pthread_mutex_unlock(tmp_right);
 	}
+	return (0);
 }
 
 long long	get_time(void)

@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/13 13:26:44 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:43:45 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,11 @@ static int	check_num(char *str)
 
 static int	get_array(t_philo *arr, t_table *table, char **argv, int i)
 {
-	if (ft_atoi(argv[1]) < 2)
-		return (error("There is not enough prhilosophers🦉\n", 1));
 	while (i < ft_atoi(argv[1]))
 	{
 		arr[i].id = i;
-		arr[i].time_to_sleep = ft_atoi(argv[3]);
-		arr[i].time_to_eat = ft_atoi(argv[4]);
+		arr[i].time_to_eat = ft_atoi(argv[3]);
+		arr[i].time_to_sleep = ft_atoi(argv[4]);
 		arr[i].eat_clock_in = 0;
 		arr[i].number_of_philosophers = ft_atoi(argv[1]);
 		arr[i].table = table;

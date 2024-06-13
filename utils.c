@@ -6,13 +6,13 @@
 /*   By: mehernan <mehernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 17:13:21 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/12 19:22:29 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:22:53 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long	get_long(pthread_mutex_t *mutex, long long *value)
+long long	get_long(t_mutex *mutex, long long *value)
 {
 	long long	tmp;
 
@@ -22,7 +22,7 @@ long long	get_long(pthread_mutex_t *mutex, long long *value)
 	return (tmp);
 }
 
-int	get_int(pthread_mutex_t *mutex, int *value)
+int	get_int(t_mutex *mutex, int *value)
 {
 	int	tmp;
 
