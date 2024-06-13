@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:18:18 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/12 19:22:15 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:26:44 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	get_array(t_philo *arr, t_table *table, char **argv, int i)
 
 int	main(int argc, char *argv[])
 {
-	int	i;
+	int		i;
 	t_philo	*arr;
 	t_table	table;
 
@@ -89,13 +89,13 @@ int	main(int argc, char *argv[])
 		arr = (t_philo *)ft_calloc(ft_atoi(argv[1]), sizeof(t_philo));
 		if (!arr)
 			return (error("Malloc error\n", 1));
-		if(get_array(arr, &table, argv, i) == 1)
+		if (get_array(arr, &table, argv, i) == 1)
 			return (1);
 		table.philos = arr;
 		table.time_to_die = ft_atoi(argv[2]);
 		table.number_of_philosophers = ft_atoi(argv[1]);
-		if(creating_threads(&table) == 1)
-			return(1);
+		if (creating_threads(&table) == 1)
+			return (1);
 		return (free_func(&table, "", 0));
 	}
 	else
