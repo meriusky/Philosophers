@@ -28,7 +28,7 @@ static void	god_decision(t_table *table)
 			{
 				lets_print(table, "philo died💀",
 					table->philos[i].id + 1);
-				table->death = 1;
+				set_int(table->data, &table->death, 1);
 				return ;
 			}
 			if (get_int(table->data, &table->philos[i].eat_times)
@@ -72,8 +72,10 @@ static void	philos_needs(t_philo *philo)
 
 	left = NULL;
 	right = NULL;
+	pthread_mutex_lock(philo->table->data);
+	pthread_mutex_unlock(philo->table->data);
 	if (philo->id % 2 != 0)
-		my_sleep(philo->time_to_eat - 1);
+		my_sleep(philo->time_to_eat);
 	while (get_int(philo->table->data, &philo->table->death) != 1
 		&& philo->eat_times != philo->must_eat)
 		if (threads_working(philo, left, right))
@@ -114,6 +116,7 @@ int	creating_threads(t_table *table)
 	if (get_memory(table, i++) == 1)
 		return (1);
 	table->start = get_time();
+	pthread_mutex_lock(table->data);
 	while (i < table->number_of_philosophers)
 	{
 		table->philos[i].eat_clock_in = get_time();
@@ -125,6 +128,7 @@ int	creating_threads(t_table *table)
 	if (pthread_create(table->god_id, NULL, (void *)&god_decision,
 			(void *)table) > 0)
 		return (free_func(table, "Thread create failed🦉\n", 1));
+	pthread_mutex_unlock(table->data);
 	i = -1;
 	while (++i < table->number_of_philosophers)
 		pthread_join(table->id[i], NULL);
