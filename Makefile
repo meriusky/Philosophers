@@ -6,7 +6,7 @@
 #    By: mehernan <mehernan@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/28 16:34:43 by mehernan          #+#    #+#              #
-#    Updated: 2024/06/13 17:01:04 by mehernan         ###   ########.fr        #
+#    Updated: 2024/06/16 17:05:09 by mehernan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS = main.c thread_management.c time.c utils.c mutex.c
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)
 
-CFLAGS += -Wall -Werror -Wextra -lpthread #-fsanitize=thread
+CFLAGS += -Wall -Werror -Wextra -lpthread#-fsanitize=thread
 
 all: $(NAME)
 

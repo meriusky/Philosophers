@@ -6,7 +6,7 @@
 /*   By: mehernan <meherna@student.42barcelna>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 17:02:53 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/13 16:55:53 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/16 17:06:01 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	god_decision(t_table *table)
 	int			i;
 	long long	now;
 
+	pthread_mutex_lock(table->data);
+	pthread_mutex_unlock(table->data);
 	while (42)
 	{
 		i = -1;
@@ -72,10 +74,11 @@ static void	philos_needs(t_philo *philo)
 
 	left = NULL;
 	right = NULL;
+	philo->eat_clock_in = get_time();
 	pthread_mutex_lock(philo->table->data);
 	pthread_mutex_unlock(philo->table->data);
 	if (philo->id % 2 != 0)
-		my_sleep(philo->time_to_eat);
+		my_sleep(philo->time_to_eat - 10);
 	while (get_int(philo->table->data, &philo->table->death) != 1
 		&& philo->eat_times != philo->must_eat)
 		if (threads_working(philo, left, right))
@@ -115,11 +118,9 @@ int	creating_threads(t_table *table)
 	i = -1;
 	if (get_memory(table, i++) == 1)
 		return (1);
-	table->start = get_time();
 	pthread_mutex_lock(table->data);
 	while (i < table->number_of_philosophers)
 	{
-		table->philos[i].eat_clock_in = get_time();
 		if (pthread_create(&table->id[i], NULL,
 				(void *)&philos_needs, (void *)&table->philos[i]) > 0)
 			return (free_func(table, "Thread create failed🦉\n", 1));
@@ -128,6 +129,7 @@ int	creating_threads(t_table *table)
 	if (pthread_create(table->god_id, NULL, (void *)&god_decision,
 			(void *)table) > 0)
 		return (free_func(table, "Thread create failed🦉\n", 1));
+	table->start = get_time();
 	pthread_mutex_unlock(table->data);
 	i = -1;
 	while (++i < table->number_of_philosophers)

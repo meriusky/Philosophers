@@ -6,7 +6,7 @@
 /*   By: mehernan <mehernan@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 16:46:26 by mehernan          #+#    #+#             */
-/*   Updated: 2024/06/13 16:20:47 by mehernan         ###   ########.fr       */
+/*   Updated: 2024/06/16 17:05:51 by mehernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,12 @@ void	lets_print(t_table *table, char *str, int p)
 	long long	now;
 
 	now = get_time();
-	if (get_int(table->data, &table->death) == 1)
-		return ;
 	pthread_mutex_lock(table->print);
+	if (get_int(table->data, &table->death) == 1)
+	{
+		pthread_mutex_unlock(table->print);
+		return ;
+	}
 	printf("%.4lld : %d  %s\n", now - table->start, p, str);
 	pthread_mutex_unlock(table->print);
 }
